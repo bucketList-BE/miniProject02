@@ -26,13 +26,6 @@ public class PostController {
         return postService.registerPost(postDtos, user);//userDetails.getUser);
     }
 
-    //게시글 조회
-    @GetMapping("/api/post/{postId}")
-    public PostDto findPost(
-            @PathVariable Long postId
-    ) {
-        return postService.findPost(postId);
-    }
 
     //게시글 수정
     @PutMapping("/api/post/{postId}")
@@ -41,5 +34,16 @@ public class PostController {
             @RequestBody PostDto postDtos
     ) {
         return postService.updatePost(postId, postDtos);
+    }
+
+    //파일 업로드 -실험중
+    @GetMapping("/api/image")
+    public String image(){
+        return "image";
+    }
+    @PostMapping("/api/image/upload")
+    public String imageUpload(){
+
+        return "성공!";
     }
 }

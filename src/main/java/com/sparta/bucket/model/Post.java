@@ -21,6 +21,12 @@ public class Post extends Timestamped {
     @Column(nullable = false)
     private String title;
 
+    @Column
+    private String filename;
+
+    @Column
+    private String filepath;
+
     @ManyToOne
     @JoinColumn(name="USER_ID", nullable = false)
     private User user;
