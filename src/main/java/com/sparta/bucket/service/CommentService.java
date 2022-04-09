@@ -2,6 +2,7 @@ package com.sparta.bucket.service;
 
 import com.sparta.bucket.dto.CommentRequestDto;
 import com.sparta.bucket.dto.CommentResponseDto;
+import com.sparta.bucket.dto.ResultResponseDto;
 import com.sparta.bucket.model.Comment;
 import com.sparta.bucket.model.Post;
 import com.sparta.bucket.repository.CommentRepository;
@@ -25,7 +26,7 @@ public class CommentService {
         return new CommentResponseDto(comment);
     }
 
-    public CommentResponseDto putComment(Long postId, Long commentId, CommentRequestDto commentRequestDto) {
+    public CommentResponseDto putComment(Long commentId, CommentRequestDto commentRequestDto) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalStateException("해당 댓글이 없습니다."));
         comment.setComment(commentRequestDto.getComment());
@@ -34,5 +35,12 @@ public class CommentService {
 
         return new CommentResponseDto(comment);
 
+    }
+
+    public ResultResponseDto deleteComment(Long commentId) {
+        commentRepository.deleteById(commentId);
+        ResultResponseDto resultResponseDto = new ResultResponseDto();
+        resultResponseDto.setResult(true);
+        return resultResponseDto;
     }
 }
