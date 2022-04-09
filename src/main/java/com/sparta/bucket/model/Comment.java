@@ -20,7 +20,7 @@ public class Comment extends Timestamped{
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private MockPost mockPost;
+    private Post post;
 
     @Column(nullable = false)
     private String comment;
@@ -30,8 +30,8 @@ public class Comment extends Timestamped{
 
     private boolean editCheck;
 
-    public Comment(MockPost mockPost, CommentRequestDto commentRequestDto) {
-        this.mockPost = mockPost;
+    public Comment(Post post, CommentRequestDto commentRequestDto) {
+        this.post = post;
         this.comment = commentRequestDto.getComment();
         this.username = commentRequestDto.getUsername();
     }
