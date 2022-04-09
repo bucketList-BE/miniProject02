@@ -17,5 +17,10 @@ public class CommentController {
         return commentService.postComment(postId, commentRequestDto);
     }
 
+    @PutMapping("/{commentId}")
+    public CommentResponseDto putComment(@PathVariable Long postId, @PathVariable Long commentId, @RequestBody CommentRequestDto commentRequestDto) {
+        return commentService.putComment(postId, commentId, commentRequestDto);
+    }
+
 
 }

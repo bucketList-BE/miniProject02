@@ -65,7 +65,7 @@ public class PostService{
 
         } return savedPost;
     }
-    
+
     //(Write.html)게시글 수정
     @Transactional
     public PostDto updatePost(Long postId, PostDto postDtos) {

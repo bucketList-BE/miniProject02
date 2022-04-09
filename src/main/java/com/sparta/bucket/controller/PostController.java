@@ -25,7 +25,7 @@ public class PostController {
     ) {
         return postService.registerPost(postDtos, user);//userDetails.getUser);
     }
-    
+
     //게시글 수정
     @PutMapping("/api/post/{postId}")
     public PostDto updatePost(

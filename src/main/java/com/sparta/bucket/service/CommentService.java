@@ -8,22 +8,32 @@ import com.sparta.bucket.repository.CommentRepository;
 import com.sparta.bucket.repository.MockPostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.net.www.MimeTable;
 
 @Service
 public class CommentService {
     @Autowired
     private MockPostRepository mockPostRepository;
     @Autowired
-    private CommentRepository commentrepository;
+    private CommentRepository commentRepository;
 
     public CommentResponseDto postComment(Long postId, CommentRequestDto commentRequestDto) {
 //        MockPost savedMockPost = mockPostRepository.findByMockPostId(postId).orElse(null);
         MockPost savedMockPost = mockPostRepository.findById(postId)
                 .orElseThrow(() -> new IllegalStateException("해당 게시글이 없습니다."));
         Comment comment = new Comment(savedMockPost, commentRequestDto);
-        comment = commentrepository.save(comment);
+        comment = commentRepository.save(comment);
 
         return new CommentResponseDto(comment);
+    }
+
+    public CommentResponseDto putComment(Long postId, Long commentId, CommentRequestDto commentRequestDto) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new IllegalStateException("해당 댓글이 없습니다."));
+        comment.setComment(commentRequestDto.getComment());
+        comment.setEditCheck(true);
+        comment = commentRepository.save(comment);
+
+        return new CommentResponseDto(comment);
+
     }
 }
