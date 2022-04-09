@@ -65,21 +65,7 @@ public class PostService{
 
         } return savedPost;
     }
-
-    //(Write.html)내가 작성한 게시글만 조회
-    @Transactional
-    public PostDto findPost(Long postId) {
-        Post post = postRepository.findById(postId).orElseThrow(
-                ()->  new NullPointerException("등록된 게시글이 없습니다.")
-        );
-
-        String title = post.getTitle();
-        List<Todo> todoList = todoRepository.findAllById(postId);
-
-        PostDto postDtos = new PostDto(title, todoList);
-        return postDtos;
-    }
-
+    
     //(Write.html)게시글 수정
     @Transactional
     public PostDto updatePost(Long postId, PostDto postDtos) {

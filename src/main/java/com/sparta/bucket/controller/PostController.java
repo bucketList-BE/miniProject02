@@ -25,15 +25,7 @@ public class PostController {
     ) {
         return postService.registerPost(postDtos, user);//userDetails.getUser);
     }
-
-    //게시글 조회
-    @GetMapping("/api/post/{postId}")
-    public PostDto findPost(
-            @PathVariable Long postId
-    ) {
-        return postService.findPost(postId);
-    }
-
+    
     //게시글 수정
     @PutMapping("/api/post/{postId}")
     public PostDto updatePost(
