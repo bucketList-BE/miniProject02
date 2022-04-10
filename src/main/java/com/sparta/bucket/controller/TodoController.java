@@ -1,6 +1,7 @@
 package com.sparta.bucket.controller;
 
 
+import com.sparta.bucket.dto.TodoDeleteResponseDto;
 import com.sparta.bucket.service.TodoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,7 @@ public class TodoController {
 
     //TodoList 삭제
     @DeleteMapping("/api/post/{postId}/todo/{TodoNum}")
-    public Boolean deleteTodoList(
+    public TodoDeleteResponseDto deleteTodoList(
             @PathVariable Long postId,
             @PathVariable Long TodoNum
     ) {
