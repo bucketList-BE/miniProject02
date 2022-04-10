@@ -9,7 +9,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class ResponsePostDto {
+public class PostResponseDto {
     private String title;
     private LocalDateTime createdAt;
     private List<Todo> todo;
