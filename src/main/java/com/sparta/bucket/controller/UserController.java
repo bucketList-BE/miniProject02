@@ -45,6 +45,11 @@ UserController {
         userRepository.deleteById(userId);
         return userId;
     }
+
+    @GetMapping("/user/test")
+    public ResponseEntity<String> test() {
+        return ResponseEntity.ok("test");
+    }
 }
 
 
