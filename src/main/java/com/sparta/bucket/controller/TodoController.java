@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/post/{postId}/todo/{TodoNum}")
+@RequestMapping("/api/post/{postId}/todo/{todoNum}")
 public class TodoController {
 
     private final TodoService todoService;
@@ -17,9 +17,9 @@ public class TodoController {
     @DeleteMapping("")
     public ResultResponseDto deleteTodoList(
             @PathVariable Long postId,
-            @PathVariable Long TodoNum
+            @PathVariable Long todoNum
     ) {
-        return todoService.deleteTodoList(postId, TodoNum);
+        return todoService.deleteTodoList(postId, todoNum);
     }
 
     @PutMapping("")

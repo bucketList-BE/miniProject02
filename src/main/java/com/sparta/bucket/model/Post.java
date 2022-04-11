@@ -22,7 +22,7 @@ public class Post extends Timestamped {
     private String title;
 
     @Column
-    private String filepath;
+    private String imageUrl;
 
     @ManyToOne
     @JoinColumn(name="USER_ID", nullable = false)
@@ -34,20 +34,16 @@ public class Post extends Timestamped {
     @OneToMany(mappedBy = "post")
     private List<Comment> comment;
 
-    public Post(String title, User user){
-        this.title = title;
-        this.user = user;
-    }
 
     public void update(PostDto postDtos) {
         this.title = postDtos.getTitle();
+        this.imageUrl = postDtos.getImageUrl();
         this.todo = postDtos.getTodo();
     }
 
-    //이미지저장 실험중... 성공 시 지우기
-    public Post(String title, String filepath, User user){
+    public Post(String title, String imageUrl, User user){
         this.title = title;
-        this.filepath = filepath;
+        this.imageUrl = imageUrl;
         this.user = user;
     }
 }
