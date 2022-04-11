@@ -31,6 +31,8 @@ public class Post extends Timestamped {
     @OneToMany(mappedBy = "post")
     private List<Todo> todo;
 
+    @OneToMany(mappedBy = "post")
+    private List<Comment> comment;
 
     public Post(String title, User user){
         this.title = title;

@@ -1,7 +1,7 @@
 package com.sparta.bucket.service;
 
 import com.sparta.bucket.dto.PostDto;
-import com.sparta.bucket.dto.PostResponseDto;
+import com.sparta.bucket.dto.ResponsePostDto;
 import com.sparta.bucket.model.Post;
 import com.sparta.bucket.model.Todo;
 import com.sparta.bucket.model.User;
@@ -28,10 +28,10 @@ public class PostService{
 
     //(Write.html)게시글 작성
     @Transactional
-    public PostResponseDto registerPost(List<PostDto> postDtos, User user)
+    public ResponsePostDto registerPost(List<PostDto> postDtos, User user) //, User user)
     {
 
-        PostResponseDto savedPost = new PostResponseDto();
+        ResponsePostDto savedPost = new ResponsePostDto();
 
 
         for (PostDto post : postDtos){
@@ -69,8 +69,6 @@ public class PostService{
 
         } return savedPost;
     }
-
-
 
     //(Write.html)게시글 수정
     @Transactional

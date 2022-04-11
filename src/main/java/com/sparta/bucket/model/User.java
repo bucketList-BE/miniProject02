@@ -31,6 +31,11 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Post> post;
 
+    public User(String password, String username, String nickname) {
+        this.password = password;
+        this.username = username;
+        this.nickname = nickname;
+    }
     //이미지저장 실험중 ... 성공 시 지우기
     public User(String username){
         this.username = username;
