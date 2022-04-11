@@ -35,21 +35,6 @@ UserController {
         return new UserResponseDto(user.getUsername(), user.getNickname());
     }
 
-
-    // 모임 삭제하기
-    @DeleteMapping("/user/{userId}")
-    public Long deletUser(@PathVariable Long userId){
-        User user =  userRepository.findById(userId).orElseThrow(
-                () -> new IllegalArgumentException("모임이 존재하지 않습니다. ")
-        );
-        userRepository.deleteById(userId);
-        return userId;
-    }
-
-    @GetMapping("/user/test")
-    public ResponseEntity<String> test() {
-        return ResponseEntity.ok("test");
-    }
 }
 
 
