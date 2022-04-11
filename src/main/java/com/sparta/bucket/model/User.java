@@ -31,4 +31,8 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Post> post;
 
+    //이미지저장 실험중 ... 성공 시 지우기
+    public User(String username){
+        this.username = username;
+    }
 }

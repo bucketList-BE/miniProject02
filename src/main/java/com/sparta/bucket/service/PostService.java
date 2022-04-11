@@ -1,7 +1,7 @@
 package com.sparta.bucket.service;
 
 import com.sparta.bucket.dto.PostDto;
-import com.sparta.bucket.dto.ResponsePostDto;
+import com.sparta.bucket.dto.PostResponseDto;
 import com.sparta.bucket.model.Post;
 import com.sparta.bucket.model.Todo;
 import com.sparta.bucket.model.User;
@@ -9,11 +9,15 @@ import com.sparta.bucket.repository.PostRepository;
 import com.sparta.bucket.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -24,10 +28,10 @@ public class PostService{
 
     //(Write.html)게시글 작성
     @Transactional
-    public ResponsePostDto registerPost(List<PostDto> postDtos, User user)
+    public PostResponseDto registerPost(List<PostDto> postDtos, User user)
     {
 
-        ResponsePostDto savedPost = new ResponsePostDto();
+        PostResponseDto savedPost = new PostResponseDto();
 
 
         for (PostDto post : postDtos){
@@ -77,5 +81,27 @@ public class PostService{
         post.update(postDtos); //여기서 update 시에 user 가 포함이 안되는 되는지...?
         PostDto postDto = new PostDto(post.getTitle(), post.getTodo());
         return postDto;
+    }
+
+    //이미지 저장 실험중...
+    public void registerImage(MultipartFile file) throws IOException {
+        Post post = new Post();
+
+        String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files";
+
+        UUID uuid = UUID.randomUUID();
+
+        String fileName = uuid + "_" + file.getOriginalFilename();
+
+        File saveFile = new File(projectPath, fileName);
+
+        file.transferTo(saveFile);
+
+
+        post.setTitle("울랄라");
+        post.setUser(new User("울랄라"));
+        post.setFilepath("/files/"+fileName);
+
+        postRepository.save(post);
     }
 }

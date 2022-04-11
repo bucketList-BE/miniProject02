@@ -23,8 +23,8 @@ public class TodoService {
     @Transactional
     public TodoDeleteResponseDto deleteTodoList(Long postId, Long todoNum) {
         TodoDeleteResponseDto todoDeleteResponseDto = new TodoDeleteResponseDto();
-        //실패시에 null 로 보내야하나...? 아님 false 로 보내야하낭...???
-        todoDeleteResponseDto.setDeleteTodoResult(false);
+        // 어차피 밑에서 exception 잡으니까 초기화 해줄 필요가 없을 듯....
+//        todoDeleteResponseDto.setDeleteTodoResult(false);
 
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new NullPointerException("해당 게시글은 존재하지 않습니다.")
