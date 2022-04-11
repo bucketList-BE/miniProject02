@@ -1,7 +1,7 @@
 package com.sparta.bucket.controller;
 
 import com.sparta.bucket.dto.PostDto;
-import com.sparta.bucket.dto.PostResponseDto;
+import com.sparta.bucket.dto.ResponsePostDto;
 import com.sparta.bucket.model.User;
 import com.sparta.bucket.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ public class PostController {
 
     //게시글 작성
     @PostMapping("/api/post")
-    public PostResponseDto createPost(
+    public ResponsePostDto createPost(
             @RequestBody List<PostDto> postDtos,
 //            @AuthenticationPrincipal UserDetailsImpl userDetails
             User user

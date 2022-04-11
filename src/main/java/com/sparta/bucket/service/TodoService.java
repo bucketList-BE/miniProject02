@@ -21,8 +21,7 @@ public class TodoService {
 
     //todoList 삭제
     @Transactional
-    public Boolean deleteTodoList(Long postId, Long todoNum) {
-        boolean deletedone = false;
+    public ResultResponseDto deleteTodoList(Long postId, Long todoNum) {
 
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new NullPointerException("해당 게시글은 존재하지 않습니다.")
@@ -33,10 +32,9 @@ public class TodoService {
         for(Todo todo : todoList){
             if (Objects.equals(todo.getId(), todoNum)) {
                 todoRepository.deleteById(todoNum);
-                deletedone = true;
             }
         }
-        return deletedone;
+        return new ResultResponseDto(true);
     }
 
     @Transactional

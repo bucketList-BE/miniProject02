@@ -8,21 +8,21 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-//@ResponseStatus(HttpStatus.OK)
+@RequestMapping("/api/post/{postId}/todo/{TodoNum}")
 public class TodoController {
 
     private final TodoService todoService;
 
     //TodoList 삭제
-    @DeleteMapping("/api/post/{postId}/todo/{TodoNum}")
-    public Boolean deleteTodoList(
+    @DeleteMapping("")
+    public ResultResponseDto deleteTodoList(
             @PathVariable Long postId,
             @PathVariable Long TodoNum
     ) {
         return todoService.deleteTodoList(postId, TodoNum);
     }
 
-    @PutMapping("/api/post/{postId}/todo/{TodoNum}")
+    @PutMapping("")
     public ResultResponseDto toggleTodo(@PathVariable Long todoNum , @RequestParam Integer done) {
         if (done == null) {
             throw new IllegalArgumentException("done 값의 입력이 필요합니다.");

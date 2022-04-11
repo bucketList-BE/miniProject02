@@ -76,7 +76,7 @@ public class PostService{
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new NullPointerException("존재하지 않는 PostId 입니다.")
         );
-        post.update(postDtos); //여기서 update 시에 user 가 포함이 안되는 되는지...?
+        post.update(postDtos); //여기서 update 시에 user 가 포함이 안되도 되는지...?
         PostDto postDto = new PostDto(post.getTitle(), post.getTodo());
         return postDto;
     }
