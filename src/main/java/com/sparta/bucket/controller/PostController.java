@@ -1,5 +1,6 @@
 package com.sparta.bucket.controller;
 
+import com.sparta.bucket.dto.PostAllGetResponseDto;
 import com.sparta.bucket.dto.PostDto;
 import com.sparta.bucket.dto.ResponsePostDto;
 import com.sparta.bucket.model.User;
@@ -33,5 +34,10 @@ public class PostController {
             @RequestBody PostDto postDtos
     ) {
         return postService.updatePost(postId, postDtos);
+    }
+
+    @GetMapping("api/posts")
+    public List<PostAllGetResponseDto> getAllPosts() {
+        return postService.getAllPosts();
     }
 }

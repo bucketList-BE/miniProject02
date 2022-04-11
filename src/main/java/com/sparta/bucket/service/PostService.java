@@ -1,5 +1,6 @@
 package com.sparta.bucket.service;
 
+import com.sparta.bucket.dto.PostAllGetResponseDto;
 import com.sparta.bucket.dto.PostDto;
 import com.sparta.bucket.dto.ResponsePostDto;
 import com.sparta.bucket.model.Post;
@@ -7,6 +8,7 @@ import com.sparta.bucket.model.Todo;
 import com.sparta.bucket.model.User;
 import com.sparta.bucket.repository.PostRepository;
 import com.sparta.bucket.repository.TodoRepository;
+import com.sun.nio.sctp.IllegalReceiveException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @RequiredArgsConstructor
 @Service
@@ -75,5 +78,19 @@ public class PostService{
         post.update(postDtos); //여기서 update 시에 user 가 포함이 안되는 되는지...?
         PostDto postDto = new PostDto(post.getTitle(), post.getTodo());
         return postDto;
+    }
+
+    public List<PostAllGetResponseDto> getAllPosts() {
+        List<Post> allSavedPosts = postRepository.findAll();
+        List<PostAllGetResponseDto> postAllGetResponseDtoList = new ArrayList<PostAllGetResponseDto>();
+        Random rand = new Random();
+
+        for (Post savedPost : allSavedPosts) {
+            int likesNum = rand.nextInt(100); // 0 ~ bound - 1
+            int commentsNum = savedPost.getComment().size();
+            postAllGetResponseDtoList.add(new PostAllGetResponseDto(savedPost,likesNum,commentsNum));
+        }
+
+        return postAllGetResponseDtoList;
     }
 }
