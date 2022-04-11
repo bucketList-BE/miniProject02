@@ -1,5 +1,6 @@
 package com.sparta.bucket.service;
 
+import com.sparta.bucket.dto.ResultResponseDto;
 import com.sparta.bucket.model.Post;
 import com.sparta.bucket.model.Todo;
 import com.sparta.bucket.repository.PostRepository;
@@ -36,5 +37,15 @@ public class TodoService {
             }
         }
         return deletedone;
+    }
+
+    @Transactional
+    public ResultResponseDto toggleTodo(Long todoNum, Integer done) {
+        Todo todo = todoRepository.findById(todoNum)
+                .orElseThrow(() -> new IllegalArgumentException("해당 하는 Todo 가 없습니다."));
+
+        todo.setDone(done == 1);
+
+        return new ResultResponseDto(true);
     }
 }

@@ -39,8 +39,6 @@ public class CommentService {
 
     public ResultResponseDto deleteComment(Long commentId) {
         commentRepository.deleteById(commentId);
-        ResultResponseDto resultResponseDto = new ResultResponseDto();
-        resultResponseDto.setResult(true);
-        return resultResponseDto;
+        return new ResultResponseDto(true);
     }
 }
