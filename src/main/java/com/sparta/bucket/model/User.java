@@ -33,4 +33,10 @@ public class User {
 
 
 //    test주석
+
+    public User(String username, String nickname, String enPassword) {
+        this.username = username;
+        this.nickname = nickname;
+        this.password = enPassword;
+    }
 }
