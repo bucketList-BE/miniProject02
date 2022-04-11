@@ -21,6 +21,9 @@ public class Post extends Timestamped {
     @Column(nullable = false)
     private String title;
 
+    @Column
+    private String imageUrl;
+
     @ManyToOne
     @JoinColumn(name="USER_ID", nullable = false)
     private User user;
@@ -28,14 +31,19 @@ public class Post extends Timestamped {
     @OneToMany(mappedBy = "post")
     private List<Todo> todo;
 
+    @OneToMany(mappedBy = "post")
+    private List<Comment> comment;
 
-    public Post(String title, User user){
-        this.title = title;
-        this.user = user;
-    }
 
     public void update(PostDto postDtos) {
         this.title = postDtos.getTitle();
+        this.imageUrl = postDtos.getImageUrl();
         this.todo = postDtos.getTodo();
+    }
+
+    public Post(String title, String imageUrl, User user){
+        this.title = title;
+        this.imageUrl = imageUrl;
+        this.user = user;
     }
 }

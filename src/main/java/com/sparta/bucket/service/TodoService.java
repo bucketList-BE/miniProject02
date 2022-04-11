@@ -1,5 +1,6 @@
 package com.sparta.bucket.service;
 
+import com.sparta.bucket.dto.ResultResponseDto;
 import com.sparta.bucket.model.Post;
 import com.sparta.bucket.model.Todo;
 import com.sparta.bucket.repository.PostRepository;
@@ -20,8 +21,7 @@ public class TodoService {
 
     //todoList 삭제
     @Transactional
-    public Boolean deleteTodoList(Long postId, Long todoNum) {
-        boolean deletedone = false;
+    public ResultResponseDto deleteTodoList(Long postId, Long todoNum) {
 
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new NullPointerException("해당 게시글은 존재하지 않습니다.")
@@ -32,9 +32,18 @@ public class TodoService {
         for(Todo todo : todoList){
             if (Objects.equals(todo.getId(), todoNum)) {
                 todoRepository.deleteById(todoNum);
-                deletedone = true;
             }
         }
-        return deletedone;
+        return new ResultResponseDto(true);
+    }
+
+    @Transactional
+    public ResultResponseDto toggleTodo(Long todoNum, Integer done) {
+        Todo todo = todoRepository.findById(todoNum)
+                .orElseThrow(() -> new IllegalArgumentException("해당 하는 Todo 가 없습니다."));
+
+        todo.setDone(done == 1);
+
+        return new ResultResponseDto(true);
     }
 }

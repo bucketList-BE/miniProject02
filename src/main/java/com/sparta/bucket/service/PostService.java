@@ -1,5 +1,6 @@
 package com.sparta.bucket.service;
 
+import com.sparta.bucket.dto.ImageDto;
 import com.sparta.bucket.dto.PostDto;
 import com.sparta.bucket.dto.ResponsePostDto;
 import com.sparta.bucket.model.Post;
@@ -9,11 +10,17 @@ import com.sparta.bucket.repository.PostRepository;
 import com.sparta.bucket.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -24,21 +31,22 @@ public class PostService{
 
     //(Write.html)게시글 작성
     @Transactional
-    public ResponsePostDto registerPost(List<PostDto> postDtos, User user) //, User user)
-    {
-
+    public ResponsePostDto registerPost(List<PostDto> postDtos, User user) {
         ResponsePostDto savedPost = new ResponsePostDto();
-
 
         for (PostDto post : postDtos){
             String title = post.getTitle();
+            String imageUrl = post.getImageUrl();
 
             if (title == null){
                 throw new IllegalArgumentException("내용을 적어주세요.");
+            } else if(imageUrl == null) {
+                throw new IllegalArgumentException("이미지를 넣어주세요.");
             }
 
+
             //게시글 저장
-            Post postList = new Post(title, user);  //, user
+            Post postList = new Post(title, imageUrl, user);
             postRepository.save(postList);
 
             //todoList 저정
@@ -56,38 +64,51 @@ public class PostService{
                 todos.add(saveTodo);
                 todoRepository.save(saveTodo);
             }
+
             //return 값 생성
             LocalDateTime createdTime = postList.getCreatedAt();
             savedPost.setTitle(title);
+            savedPost.setImageUrl(imageUrl);
             savedPost.setTodo(todos);
             savedPost.setCreatedAt(createdTime);
-
-
         } return savedPost;
-    }
-
-    //(Write.html)내가 작성한 게시글만 조회
-    @Transactional
-    public PostDto findPost(Long postId) {
-        Post post = postRepository.findById(postId).orElseThrow(
-                ()->  new NullPointerException("등록된 게시글이 없습니다.")
-        );
-
-        String title = post.getTitle();
-        List<Todo> todoList = todoRepository.findAllById(postId);
-
-        PostDto postDtos = new PostDto(title, todoList);
-        return postDtos;
     }
 
     //(Write.html)게시글 수정
     @Transactional
-    public PostDto updatePost(Long postId, PostDto postDtos) {
+    public ResponsePostDto updatePost(Long postId, PostDto postDtos) {
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new NullPointerException("존재하지 않는 PostId 입니다.")
         );
-        post.update(postDtos); //여기서 update 시에 user 가 포함이 안되는 되는지...?
-        PostDto postDto = new PostDto(post.getTitle(), post.getTodo());
-        return postDto;
+
+        //게시글 수정 시 이미지가 다를 시 기존 이미지 삭제하기
+        if(!(post.getImageUrl().equals(postDtos.getImageUrl()))){
+            String projectPath = System.getProperty("user.dir") + "\\src\\main";
+            projectPath += post.getImageUrl();
+            try {
+                Files.delete(Paths.get(projectPath));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        post.update(postDtos);//여기서 update 시에 user 가 포함이 안되도 되겠징???
+        return new ResponsePostDto(post.getTitle(), post.getImageUrl(), post.getCreatedAt(), post.getTodo());
+    }
+
+    //(Write.html)이미지 저장
+    public ImageDto registerImage(MultipartFile file) throws IOException {
+
+        String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files";
+
+        UUID uuid = UUID.randomUUID();
+
+        String fileName = uuid + "_" + file.getOriginalFilename();
+
+        File saveFile = new File(projectPath, fileName);
+
+        file.transferTo(saveFile);
+
+        return new ImageDto("/files/"+fileName);
     }
 }
