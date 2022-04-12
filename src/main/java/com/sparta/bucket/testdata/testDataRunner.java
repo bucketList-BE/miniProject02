@@ -31,11 +31,6 @@ public class testDataRunner implements ApplicationRunner {
         User user= new User("test1@sp.com","test1",enPassword);
         userRepository.save(user);
 
-//        Post post0 = new Post("안녕하세요1",user0);
-//        Post post1 = new Post("안녕하세요2",user0);
-//
-//        postRepository.save(post0);
-//        postRepository.save(post1);
     }
 }
 
