@@ -1,7 +1,7 @@
-
 package com.sparta.bucket.testdata;
 
 
+import com.sparta.bucket.model.Post;
 import com.sparta.bucket.model.User;
 import com.sparta.bucket.repository.PostRepository;
 import com.sparta.bucket.repository.UserRepository;
@@ -25,12 +25,9 @@ public class testDataRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-
         String enPassword = passwordEncoder.encode("1234");
         // 테스트 User 생성
-        User user= new User("test1@sp.com","test1",enPassword);
+        User user = new User("test1@sp.com", "test1", enPassword);
         userRepository.save(user);
-
     }
 }
-

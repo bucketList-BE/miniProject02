@@ -1,45 +1,61 @@
 package com.sparta.bucket.controller;
 
+import com.sparta.bucket.dto.ImageDto;
+import com.sparta.bucket.dto.PostAllGetResponseDto;
 import com.sparta.bucket.dto.PostDto;
+import com.sparta.bucket.dto.PostGetResponseDto;
 import com.sparta.bucket.dto.ResponsePostDto;
 import com.sparta.bucket.model.User;
+import com.sparta.bucket.security.UserDetailsImpl;
 import com.sparta.bucket.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-//@ResponseStatus(HttpStatus.OK)
 public class PostController {
 
     private final PostService postService;
 
     //게시글 작성
-    @PostMapping("/api/posts")
+    @PostMapping("/api/post")
     public ResponsePostDto createPost(
-            @RequestBody List<PostDto> postDtos,
-//            @AuthenticationPrincipal UserDetailsImpl userDetails
-            User user
+            @RequestBody PostDto postDtos,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        return postService.registerPost(postDtos, user);//userDetails.getUser);
+        System.out.println("user의 정보를 가져옵니다.^^" + userDetails.getUser());
+        return postService.registerPost(postDtos, userDetails.getUser()); // , useruserDetails.getUser);
     }
 
-//    //게시글 조회
-//    @GetMapping("/api/post/{postId}")
-//    public PostDto findPost(
-//            @PathVariable Long postId
-//    ) {
-//        return postService.findPost(postId);
-//    }
-//
-//    //게시글 수정
-//    @PutMapping("/api/post/{postId}")
-//    public PostDto updatePost(
-//            @PathVariable Long postId,
-//            @RequestBody PostDto postDtos
-//    ) {
-//        return postService.updatePost(postId, postDtos);
-//    }
+    //게시글 수정
+    @PutMapping("/api/post/{postId}")
+    public ResponsePostDto updatePost(
+            @PathVariable Long postId,
+            @RequestBody PostDto postDtos
+    ) {
+        return postService.updatePost(postId, postDtos);
+    }
+
+    //이미지 저장
+    @PostMapping("/api/image")
+    public ImageDto imageUpload(@RequestParam("file") MultipartFile file) throws IOException {
+        return postService.registerImage(file);
+    }
+
+    //전체 게시글 조회
+    @GetMapping("/api/posts")
+    public List<PostAllGetResponseDto> getAllPosts() {
+        return postService.getAllPosts();
+    }
+
+    //게시글 조회
+    @GetMapping("/api/post/{postId}")
+    public PostGetResponseDto getPost(@PathVariable Long postId) {
+        return postService.getPost(postId);
+    }
 }

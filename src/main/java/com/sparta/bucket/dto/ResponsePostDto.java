@@ -1,6 +1,5 @@
 package com.sparta.bucket.dto;
 
-import com.sparta.bucket.model.Todo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +16,7 @@ public class ResponsePostDto {
     private String title;
     private String imageUrl;
     private LocalDateTime createdAt;
-    private List<Todo> todo;
+    private List<ResponseTodoDto> todo;
 
 
 }
