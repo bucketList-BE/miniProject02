@@ -35,14 +35,19 @@ UserController {
     }
 
     // 아이디 중복확인
-    @PostMapping("/user/idCheck")
-    public ResultResponseDto duplicateUsername(@RequestParam("username") String username) {
+    @GetMapping("/user/idCheck/{username}")
+    public ResultResponseDto duplicateUsername(@PathVariable("username") String username) {
+        System.out.println("idCheck input username : "+username);
+        System.out.println("idCheck result : " + userService.duplicateUsername(username).isResult());
+        System.out.println("idCheck result reverse : " + userService.duplicateUsername(username));
         return userService.duplicateUsername(username);
     }
 
     // 닉네임 중복확인
-    @PostMapping("/user/nicknameCheck")
-    public ResultResponseDto duplicateNickname(@RequestParam("nickname") String nickname) {
+    @GetMapping("/user/nicknameCheck/{nickname}")
+    public ResultResponseDto duplicateNickname(@PathVariable("nickname") String nickname) {
+        System.out.println("nicknameCheck input nickname : " + nickname);
+        System.out.println("nicknameCheck result : " + userService.duplicatecNickname(nickname).isResult());
         return userService.duplicatecNickname(nickname);
     }
 
