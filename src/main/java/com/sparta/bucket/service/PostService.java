@@ -4,12 +4,13 @@ import com.sparta.bucket.dto.ImageDto;
 import com.sparta.bucket.dto.PostAllGetResponseDto;
 import com.sparta.bucket.dto.PostDto;
 import com.sparta.bucket.dto.ResponsePostDto;
+import com.sparta.bucket.dto.*;
+import com.sparta.bucket.model.Comment;
 import com.sparta.bucket.model.Post;
 import com.sparta.bucket.model.Todo;
 import com.sparta.bucket.model.User;
 import com.sparta.bucket.repository.PostRepository;
 import com.sparta.bucket.repository.TodoRepository;
-import com.sun.nio.sctp.IllegalReceiveException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -127,5 +128,19 @@ public class PostService{
         }
 
         return postAllGetResponseDtoList;
+    }
+
+    public PostGetResponseDto getPost(Long postId) {
+        Post savedPost = postRepository.findById(postId)
+                .orElseThrow(()->new NullPointerException("존재하지 않는 PostId 입니다."));
+        Random rand = new Random();
+        int likesNum = rand.nextInt(100);
+        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+
+        for (Comment comment : savedPost.getComment()) {
+            commentResponseDtoList.add(new CommentResponseDto(comment));
+        }
+
+        return new PostGetResponseDto(savedPost,likesNum,commentResponseDtoList);
     }
 }
