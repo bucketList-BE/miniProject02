@@ -30,14 +30,6 @@ public class PostController {
         return postService.registerPost(postDtos); // , useruserDetails.getUser);
     }
 
-    //게시글 조회
-    @GetMapping("/api/post/{postId}")
-    public PostDto findPost(
-            @PathVariable Long postId
-    ) {
-        return postService.findPost(postId);
-    }
-
     //게시글 수정
     @PutMapping("/api/post/{postId}")
     public ResponsePostDto updatePost(
@@ -53,11 +45,13 @@ public class PostController {
         return postService.registerImage(file);
     }
 
+    //전체 게시글 조회
     @GetMapping("/api/posts")
     public List<PostAllGetResponseDto> getAllPosts() {
         return postService.getAllPosts();
     }
 
+    //게시글 조회
     @GetMapping("/api/post/{postId}")
     public PostGetResponseDto getPost(@PathVariable Long postId) {
         return postService.getPost(postId);
