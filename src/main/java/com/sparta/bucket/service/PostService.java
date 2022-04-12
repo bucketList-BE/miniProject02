@@ -1,6 +1,11 @@
 package com.sparta.bucket.service;
 
+import com.sparta.bucket.dto.ImageDto;
+import com.sparta.bucket.dto.PostAllGetResponseDto;
+import com.sparta.bucket.dto.PostDto;
+import com.sparta.bucket.dto.ResponsePostDto;
 import com.sparta.bucket.dto.*;
+import com.sparta.bucket.model.Comment;
 import com.sparta.bucket.model.Post;
 import com.sparta.bucket.model.Todo;
 import com.sparta.bucket.model.User;
@@ -18,6 +23,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.Random;
 
 @RequiredArgsConstructor
 @Service
@@ -142,5 +148,33 @@ public class PostService {
         file.transferTo(saveFile);
 
         return new ImageDto("/image/" + fileName);
+    }
+
+    public List<PostAllGetResponseDto> getAllPosts() {
+        List<Post> allSavedPosts = postRepository.findAll();
+        List<PostAllGetResponseDto> postAllGetResponseDtoList = new ArrayList<PostAllGetResponseDto>();
+        Random rand = new Random();
+
+        for (Post savedPost : allSavedPosts) {
+            int likesNum = rand.nextInt(100); // 0 ~ bound - 1
+            int commentsNum = savedPost.getComment().size();
+            postAllGetResponseDtoList.add(new PostAllGetResponseDto(savedPost,likesNum,commentsNum));
+        }
+
+        return postAllGetResponseDtoList;
+    }
+
+    public PostGetResponseDto getPost(Long postId) {
+        Post savedPost = postRepository.findById(postId)
+                .orElseThrow(()->new NullPointerException("존재하지 않는 PostId 입니다."));
+        Random rand = new Random();
+        int likesNum = rand.nextInt(100);
+        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+
+        for (Comment comment : savedPost.getComment()) {
+            commentResponseDtoList.add(new CommentResponseDto(comment));
+        }
+
+        return new PostGetResponseDto(savedPost,likesNum,commentResponseDtoList);
     }
 }
