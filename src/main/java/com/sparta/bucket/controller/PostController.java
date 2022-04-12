@@ -6,8 +6,10 @@ import com.sparta.bucket.dto.PostDto;
 import com.sparta.bucket.dto.PostGetResponseDto;
 import com.sparta.bucket.dto.ResponsePostDto;
 import com.sparta.bucket.model.User;
+import com.sparta.bucket.security.UserDetailsImpl;
 import com.sparta.bucket.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,11 +25,11 @@ public class PostController {
     //게시글 작성
     @PostMapping("/api/post")
     public ResponsePostDto createPost(
-            @RequestBody PostDto postDtos
-//            @AuthenticationPrincipal UserDetailsImpl userDetails
-//            User user
+            @RequestBody PostDto postDtos,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        return postService.registerPost(postDtos); // , useruserDetails.getUser);
+        System.out.println("user의 정보를 가져옵니다.^^" + userDetails.getUser());
+        return postService.registerPost(postDtos, userDetails.getUser()); // , useruserDetails.getUser);
     }
 
     //게시글 수정

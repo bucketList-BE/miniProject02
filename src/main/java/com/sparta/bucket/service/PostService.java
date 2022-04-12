@@ -35,7 +35,7 @@ public class PostService {
 
     //(Write.html)게시글 작성
     @Transactional
-    public ResponsePostDto registerPost(PostDto postDtos) {   //, User user
+    public ResponsePostDto registerPost(PostDto postDtos, User user) {
         ResponsePostDto savedPost = new ResponsePostDto();
         List<ResponseTodoDto> responsetodoList = new ArrayList<>();
 
@@ -47,12 +47,6 @@ public class PostService {
         } else if (imageUrl == null) {
             throw new IllegalArgumentException("이미지를 넣어주세요.");
         }
-
-
-        //게시글 저장
-        User user = userRepository.findById(1L).orElseThrow(
-                ()-> new IllegalArgumentException("찾는 유저가 없습니다.")
-        );
 
         Post postList = new Post(title, imageUrl, user);
         postRepository.save(postList);
