@@ -25,13 +25,10 @@ public class testDataRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         // 테스트 User 생성
-        User user0= new User("123","sugar","sugar");
-        user0 = userRepository.save(user0);
+        User user1= new User("123","sugar","sugar");
+        user1 = userRepository.save(user1);
 
-        Post post0 = new Post("안녕하세요1",user0);
-        Post post1 = new Post("안녕하세요2",user0);
 
-        postRepository.save(post0);
-        postRepository.save(post1);
+
     }
 }

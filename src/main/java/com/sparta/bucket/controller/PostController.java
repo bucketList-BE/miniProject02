@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "/*")
 @RequiredArgsConstructor
 @RestController
 public class PostController {
@@ -22,11 +22,11 @@ public class PostController {
     //게시글 작성
     @PostMapping("/api/post")
     public ResponsePostDto createPost(
-            @RequestBody List<PostDto> postDtos,
+            @RequestBody PostDto postDtos
 //            @AuthenticationPrincipal UserDetailsImpl userDetails
-            User user
+//            User user
     ) {
-        return postService.registerPost(postDtos, user);//userDetails.getUser);
+        return postService.registerPost(postDtos); // , useruserDetails.getUser);
     }
 
     //게시글 수정
