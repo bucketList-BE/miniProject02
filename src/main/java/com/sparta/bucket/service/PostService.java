@@ -1,7 +1,6 @@
 package com.sparta.bucket.service;
 
 import com.sparta.bucket.dto.*;
-import com.sparta.bucket.model.Comment;
 import com.sparta.bucket.model.Post;
 import com.sparta.bucket.model.Todo;
 import com.sparta.bucket.model.User;
@@ -15,8 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -99,20 +96,20 @@ public class PostService {
         }
 
         //게시글 수정 시 이미지가 다를 시 기존 이미지 삭제하기
-        if (!(post.getImageUrl().equals(postDtos.getImageUrl()))) {
-            String projectPath = System.getProperty("user.dir") + "\\src\\main";
-            //서버연결시 변경하기
-//            String projectPath = "/home/ubuntu/image";
+//        if (!(post.getImageUrl().equals(postDtos.getImageUrl()))) {
+//            String projectPath = "http://13.125.254.246/home/ubuntu/image/301f128d-8f10-43a2-b284-6a1a8ac154d9_React-icon.svg.png";
+//
+//            projectPath = post.getImageUrl();
+//            projectPath = projectPath.substring(projectPath.indexOf("/home/ubuntu/image"));
+//            System.out.println(projectPath);
+//
+//            try {
+//                Files.delete(Paths.get(projectPath));
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
-            projectPath += post.getImageUrl();
-            try {
-                Files.delete(Paths.get(projectPath));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-//        post.update(postDtos);//여기서 update 시에 user 가 포함이 안되도 되겠징???
         post.update(postDtos);
 
         List<ResponseTodoDto> responsetodoList = new ArrayList<>();
@@ -134,8 +131,6 @@ public class PostService {
     //(Write.html)이미지 저장
     public ImageDto registerImage(MultipartFile file) throws IOException {
 
-//        String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files";
-
         String projectPath = "/home/ubuntu/image";
 
         UUID uuid = UUID.randomUUID();
@@ -145,8 +140,6 @@ public class PostService {
         File saveFile = new File(projectPath, fileName);
 
         file.transferTo(saveFile);
-
-//        return new ImageDto("/files/"+fileName);
 
         return new ImageDto("/image/" + fileName);
     }
