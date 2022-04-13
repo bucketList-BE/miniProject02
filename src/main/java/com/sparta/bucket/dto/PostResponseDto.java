@@ -12,11 +12,11 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponsePostDto {
+public class PostResponseDto {
     private String title;
     private String imageUrl;
     private LocalDateTime createdAt;
-    private List<ResponseTodoDto> todo;
+    private List<TodoResponseDto> todo;
 
 
 }
