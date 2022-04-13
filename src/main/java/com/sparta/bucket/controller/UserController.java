@@ -1,10 +1,9 @@
 package com.sparta.bucket.controller;
 
 import com.sparta.bucket.dto.ResultResponseDto;
-import com.sparta.bucket.model.User;
 import com.sparta.bucket.dto.SignupRequestDto;
 import com.sparta.bucket.dto.UserResponseDto;
-import com.sparta.bucket.repository.UserRepository;
+import com.sparta.bucket.model.User;
 import com.sparta.bucket.security.UserDetailsImpl;
 import com.sparta.bucket.service.UserService;
 import lombok.RequiredArgsConstructor;

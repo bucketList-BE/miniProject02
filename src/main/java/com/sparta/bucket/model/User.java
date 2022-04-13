@@ -32,11 +32,14 @@ public class User {
     private List<Post> post;
 
 
+
     public User(String username, String nickname, String enPassword) {
         this.username = username;
         this.nickname = nickname;
         this.password = enPassword;
     }
+
+
     //이미지저장 실험중 ... 성공 시 지우기
     public User(String username){
         this.username = username;

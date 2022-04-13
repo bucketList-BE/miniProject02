@@ -7,6 +7,7 @@ import com.sparta.bucket.dto.PostGetResponseDto;
 import com.sparta.bucket.dto.PostResponseDto;
 import com.sparta.bucket.security.UserDetailsImpl;
 import com.sparta.bucket.service.PostService;
+import com.sparta.bucket.service.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -20,14 +21,17 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
+    private final S3Service s3Service;
 
     //게시글 작성
     @PostMapping("/api/post")
     public PostResponseDto createPost(
-            @RequestBody PostDto postDtos,
+            @RequestPart PostDto postDtos,
+            @RequestPart MultipartFile file,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        System.out.println("user의 정보를 가져옵니다.^^" + userDetails.getUser());
+        String imagePath = s3Service.upload(file);
+        postDtos.setImageUrl(imagePath);
         return postService.registerPost(postDtos, userDetails.getUser());
     }
 
@@ -35,16 +39,19 @@ public class PostController {
     @PutMapping("/api/post/{postId}")
     public PostResponseDto updatePost(
             @PathVariable Long postId,
-            @RequestBody PostDto postDtos
+            @RequestPart PostDto postDtos,
+            @RequestPart MultipartFile file
     ) {
+        String imagePath = s3Service.upload(file, postDtos.getImageUrl());
+        postDtos.setImageUrl(imagePath);
         return postService.updatePost(postId, postDtos);
     }
 
-    //이미지 저장
-    @PostMapping("/api/image")
-    public ImageDto imageUpload(@RequestParam("file") MultipartFile file) throws IOException {
-        return postService.registerImage(file);
-    }
+//    //이미지 저장
+//    @PostMapping("/api/image")
+//    public ImageDto imageUpload(@RequestParam("file") MultipartFile file) throws IOException {
+//        return postService.registerImage(file);
+//    }
 
     //전체 게시글 조회
     @GetMapping("/api/posts")

@@ -58,4 +58,11 @@ public class UserDetailsImpl implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.emptyList();
     }
+
+    @Override
+    public String toString() {
+        return "UserDetailsImpl{" +
+                "user=" + user +
+                '}';
+    }
 }
