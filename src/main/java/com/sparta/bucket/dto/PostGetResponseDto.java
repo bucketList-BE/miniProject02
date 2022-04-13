@@ -1,8 +1,6 @@
 package com.sparta.bucket.dto;
 
-import com.sparta.bucket.model.Comment;
 import com.sparta.bucket.model.Post;
-import com.sparta.bucket.model.Todo;
 import lombok.Getter;
 
 import java.util.List;
@@ -15,18 +13,17 @@ public class PostGetResponseDto {
     private String imageUrl;
     private Integer likesNum;
     private Integer commentsNum;
-    private List<Todo> todo;
+    private List<TodoResponseDto> todo;
     private List<CommentResponseDto> comments;
 
 
-    public PostGetResponseDto(Post savedPost, Integer likesNum, List<CommentResponseDto> commentResponseDtoList) {
+    public PostGetResponseDto(Post savedPost, List<TodoResponseDto> todoResponseDtoList, Integer likesNum, List<CommentResponseDto> commentResponseDtoList) {
         this.postId = savedPost.getId();
         this.userNickname = savedPost.getUser().getNickname();
         this.title = savedPost.getTitle();
-//        this.imageUrl = savedPost.getImageUrl();
-        this.imageUrl = "URL";
+        this.imageUrl = savedPost.getImageUrl();
         this.likesNum = likesNum;
-        this.todo = savedPost.getTodo();
+        this.todo = todoResponseDtoList;
         this.comments = commentResponseDtoList;
         this.commentsNum = commentResponseDtoList.size();
     }

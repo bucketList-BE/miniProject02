@@ -16,8 +16,7 @@ public class PostAllGetResponseDto {
         this.postId = savedPost.getId();
         this.userNickname = savedPost.getUser().getNickname();
         this.title = savedPost.getTitle();
-//        this.imageUrl = savedPost.getImageUrl();
-        this.imageUrl = "URL";
+        this.imageUrl = savedPost.getImageUrl();
         this.likesNum = likesNum;
         this.commentsNum = commentsNum;
     }

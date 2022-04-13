@@ -3,7 +3,7 @@ package com.sparta.bucket.service;
 import com.sparta.bucket.dto.ImageDto;
 import com.sparta.bucket.dto.PostAllGetResponseDto;
 import com.sparta.bucket.dto.PostDto;
-import com.sparta.bucket.dto.ResponsePostDto;
+import com.sparta.bucket.dto.PostResponseDto;
 import com.sparta.bucket.dto.*;
 import com.sparta.bucket.model.Comment;
 import com.sparta.bucket.model.Post;
@@ -35,9 +35,8 @@ public class PostService {
 
     //(Write.html)게시글 작성
     @Transactional
-    public ResponsePostDto registerPost(PostDto postDtos, User user) {
-        ResponsePostDto savedPost = new ResponsePostDto();
-        List<ResponseTodoDto> responsetodoList = new ArrayList<>();
+    public PostResponseDto registerPost(PostDto postDtos, User user) {
+        List<TodoResponseDto> todoResponseDtoList = new ArrayList<>();
 
         String title = postDtos.getTitle();
         String imageUrl = postDtos.getImageUrl();
@@ -68,24 +67,19 @@ public class PostService {
         }
 
         for(Todo responsetodo :todos){
-            ResponseTodoDto todo = new ResponseTodoDto(responsetodo.getId(), responsetodo.getContent(), responsetodo.getDone());
-            responsetodoList.add(todo);
+            TodoResponseDto todo = new TodoResponseDto(responsetodo.getId(), responsetodo.getContent(), responsetodo.getDone());
+            todoResponseDtoList.add(todo);
         }
 
 
         //return 값 생성
         LocalDateTime createdTime = postList.getCreatedAt();
-        savedPost.setTitle(title);
-        savedPost.setImageUrl(imageUrl);
-        savedPost.setTodo(responsetodoList);
-        savedPost.setCreatedAt(createdTime);
-
-        return savedPost;
+        return new PostResponseDto(title, imageUrl, createdTime, todoResponseDtoList);
     }
 
     //(Write.html)게시글 수정
     @Transactional
-    public ResponsePostDto updatePost(Long postId, PostDto postDtos) {
+    public PostResponseDto updatePost(Long postId, PostDto postDtos) {
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new NullPointerException("존재하지 않는 PostId 입니다.")
         );
@@ -95,24 +89,9 @@ public class PostService {
             todoRepository.deleteById(todo.getId());
         }
 
-        //게시글 수정 시 이미지가 다를 시 기존 이미지 삭제하기
-//        if (!(post.getImageUrl().equals(postDtos.getImageUrl()))) {
-//            String projectPath = "http://13.125.254.246/home/ubuntu/image/301f128d-8f10-43a2-b284-6a1a8ac154d9_React-icon.svg.png";
-//
-//            projectPath = post.getImageUrl();
-//            projectPath = projectPath.substring(projectPath.indexOf("/home/ubuntu/image"));
-//            System.out.println(projectPath);
-//
-//            try {
-//                Files.delete(Paths.get(projectPath));
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-
         post.update(postDtos);
 
-        List<ResponseTodoDto> responsetodoList = new ArrayList<>();
+        List<TodoResponseDto> todoResponseDtoList = new ArrayList<>();
         List<Todo> todos = new ArrayList<>();
         for(Todo responsetodo :postDtos.getTodo()){
             String content = responsetodo.getContent();
@@ -121,24 +100,19 @@ public class PostService {
             todos.add(saveTodo);
             todoRepository.save(saveTodo);
 
-            ResponseTodoDto todo = new ResponseTodoDto(saveTodo.getId(), saveTodo.getContent(), saveTodo.getDone());
-            responsetodoList.add(todo);
+            TodoResponseDto todo = new TodoResponseDto(saveTodo.getId(), saveTodo.getContent(), saveTodo.getDone());
+            todoResponseDtoList.add(todo);
         }
-
-        return new ResponsePostDto(post.getTitle(), post.getImageUrl(), post.getCreatedAt(), responsetodoList);
+        return new PostResponseDto(post.getTitle(), post.getImageUrl(), post.getCreatedAt(), todoResponseDtoList);
     }
 
     //(Write.html)이미지 저장
     public ImageDto registerImage(MultipartFile file) throws IOException {
 
         String projectPath = "/home/ubuntu/image";
-
         UUID uuid = UUID.randomUUID();
-
         String fileName = uuid + "_" + file.getOriginalFilename();
-
         File saveFile = new File(projectPath, fileName);
-
         file.transferTo(saveFile);
 
         return new ImageDto("/image/" + fileName);
@@ -164,11 +138,16 @@ public class PostService {
         Random rand = new Random();
         int likesNum = rand.nextInt(100);
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+        List<TodoResponseDto> todoResponseDtoList = new ArrayList<>();
+
+        for (Todo todo : savedPost.getTodo()) {
+            todoResponseDtoList.add(new TodoResponseDto(todo));
+        }
 
         for (Comment comment : savedPost.getComment()) {
             commentResponseDtoList.add(new CommentResponseDto(comment));
         }
 
-        return new PostGetResponseDto(savedPost,likesNum,commentResponseDtoList);
+        return new PostGetResponseDto(savedPost,todoResponseDtoList,likesNum,commentResponseDtoList);
     }
 }
