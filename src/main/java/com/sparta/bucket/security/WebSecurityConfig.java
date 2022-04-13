@@ -66,8 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web
                 .ignoring()
                 .antMatchers("/h2-console/**")
-                .antMatchers("/auth/**")
-                .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**");;
+                .antMatchers("/auth/**");
     }
 
     @Override
@@ -76,7 +75,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/v2/api-docs", "/swagger-resources/**", "**/swagger-resources/**", "/swagger-ui.html", "/webjars/**", "/swagger/**").permitAll()
                 .antMatchers(HttpMethod.OPTIONS).permitAll() // preflight 대응
                 .antMatchers("/auth/**").permitAll(); // /auth/**에 대한 접근을 인증 절차 없이 허용(로그인 관련 url)
                 // 특정 권한을 가진 사용자만 접근을 허용해야 할 경우, 하기 항목을 통해 가능
@@ -147,19 +145,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // 회원 관리 API 허용
         skipPathList.add("GET,/user/**");
         skipPathList.add("POST,/user/**");
+        skipPathList.add("GET,/oauth/**");
 
         skipPathList.add("GET,/image/**");
         skipPathList.add("GET,/");
 
-        skipPathList.add("GET,/oauth/kakao/callback");
-        skipPathList.add("GET,/oauth/**");
 
-        // Swagger
-        skipPathList.add("GET, /swagger-ui.html");
-        skipPathList.add("GET, /swagger/**");
-        skipPathList.add("GET, /swagger-resources/**");
-        skipPathList.add("GET, /webjars/**");
-        skipPathList.add("GET, /v2/api-docs");
 
 
         FilterSkipMatcher matcher = new FilterSkipMatcher(

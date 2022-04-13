@@ -111,13 +111,20 @@ public class KakaoUserService {
 
     private User registerKakaoUserIfNeeded(KakaoUserInfoDto kakaoUserInfo) {
         // DB 에 중복된 Kakao Id 가 있는지 확인
-        Long kakaoId = kakaoUserInfo.getId();
-        User kakaoUser = userRepository.findByKakaoId(kakaoId)
+//        Long kakaoId = kakaoUserInfo.getId();
+        // 카카오 아이디를 String으로 변환하여 username으로 db에 저장
+        String kakaoUsername = Long.toString(kakaoUserInfo.getId());
+
+        System.out.println("input kakaoId : " +kakaoUsername);
+
+        User kakaoUser = userRepository.findByUsername(kakaoUsername)
                 .orElse(null);
         if (kakaoUser == null) {
             // 회원가입
             // username: kakao nickname
-            String nickname = kakaoUserInfo.getNickname();
+            String kakaoNickname = kakaoUsername + "_" + kakaoUserInfo.getNickname();
+
+            System.out.println("kakaoNickname : " + kakaoNickname);
 
             // password: random UUID
             String password = UUID.randomUUID().toString();
@@ -126,10 +133,7 @@ public class KakaoUserService {
             // email: kakao email
             //String email = kakaoUserInfo.getEmail();
 
-            // 카카오 아이디를 String으로 변환하여 username으로 db에 저장
-            String kakaoUsername = Long.toString(kakaoId);
-
-            kakaoUser = new User(nickname, encodedPassword, kakaoUsername, kakaoId);
+            kakaoUser = new User(kakaoUsername, kakaoNickname, encodedPassword);
             userRepository.save(kakaoUser);
         }
         return kakaoUser;

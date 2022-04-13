@@ -18,9 +18,9 @@ public class KakaoUserController {
 
 //    @ApiOperation("카카오 로그인")
     @GetMapping("/oauth/kakao/callback")
-    public ResponseEntity<String> kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
+    public void kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
+        System.out.println("code : " + code);
 
-        System.out.println("넘어오나요?제발");
         // authorizedCode: 카카오 서버로부터 받은 인가 코드
         String token = kakaoUserService.kakaoLogin(code);
 
@@ -28,7 +28,6 @@ public class KakaoUserController {
 
         response.addHeader(AUTH_HEADER, token);
 
-        return ResponseEntity.ok("fucku");
     }
 
 //    @GetMapping("/oauth/kakao/call")

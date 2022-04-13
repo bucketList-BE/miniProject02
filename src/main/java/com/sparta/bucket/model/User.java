@@ -28,9 +28,6 @@ public class User {
     @Column(nullable = false, unique = true)
     private String nickname;
 
-    @Column
-    private Long kakaoId;
-
     @OneToMany(mappedBy = "user")
     private List<Post> post;
 
@@ -42,12 +39,6 @@ public class User {
         this.password = enPassword;
     }
 
-    public User(String nickname, String encodedPassword, String email, Long kakaoId) {
-        this.username = email;
-        this.nickname = nickname;
-        this.password = encodedPassword;
-        this.kakaoId = kakaoId;
-    }
 
     //이미지저장 실험중 ... 성공 시 지우기
     public User(String username){
