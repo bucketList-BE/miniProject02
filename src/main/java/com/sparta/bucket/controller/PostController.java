@@ -4,6 +4,7 @@ import com.sparta.bucket.dto.ImageDto;
 import com.sparta.bucket.dto.PostAllGetResponseDto;
 import com.sparta.bucket.dto.PostDto;
 import com.sparta.bucket.dto.PostGetResponseDto;
+import com.sparta.bucket.dto.PostResponseDto;
 import com.sparta.bucket.dto.ResponsePostDto;
 import com.sparta.bucket.security.UserDetailsImpl;
 import com.sparta.bucket.service.PostService;
@@ -23,7 +24,7 @@ public class PostController {
 
     //게시글 작성
     @PostMapping("/api/post")
-    public ResponsePostDto createPost(
+    public PostResponseDto createPost(
             @RequestBody PostDto postDtos,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
@@ -33,7 +34,7 @@ public class PostController {
 
     //게시글 수정
     @PutMapping("/api/post/{postId}")
-    public ResponsePostDto updatePost(
+    public PostResponseDto updatePost(
             @PathVariable Long postId,
             @RequestBody PostDto postDtos
     ) {

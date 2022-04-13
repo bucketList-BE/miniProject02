@@ -3,7 +3,7 @@ package com.sparta.bucket.service;
 import com.sparta.bucket.dto.ImageDto;
 import com.sparta.bucket.dto.PostAllGetResponseDto;
 import com.sparta.bucket.dto.PostDto;
-import com.sparta.bucket.dto.ResponsePostDto;
+import com.sparta.bucket.dto.PostResponseDto;
 import com.sparta.bucket.dto.*;
 import com.sparta.bucket.model.Comment;
 import com.sparta.bucket.model.Post;
@@ -11,6 +11,7 @@ import com.sparta.bucket.model.Todo;
 import com.sparta.bucket.model.User;
 import com.sparta.bucket.repository.PostRepository;
 import com.sparta.bucket.repository.TodoRepository;
+import com.sparta.bucket.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,11 +31,13 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final TodoRepository todoRepository;
+    private final UserRepository userRepository;
 
     //(Write.html)게시글 작성
     @Transactional
-    public ResponsePostDto registerPost(PostDto postDtos, User user) {
-        List<ResponseTodoDto> responsetodoList = new ArrayList<>();
+    public PostResponseDto registerPost(PostDto postDtos, User user) {
+        PostResponseDto savedPost = new PostResponseDto();
+        List<TodoResponseDto> todoResponseDtoList = new ArrayList<>();
 
         String title = postDtos.getTitle();
         String imageUrl = postDtos.getImageUrl();
@@ -65,20 +68,24 @@ public class PostService {
         }
 
         for(Todo responsetodo :todos){
-            ResponseTodoDto todo = new ResponseTodoDto(responsetodo.getId(), responsetodo.getContent(), responsetodo.getDone());
-            responsetodoList.add(todo);
+            TodoResponseDto todo = new TodoResponseDto(responsetodo.getId(), responsetodo.getContent(), responsetodo.getDone());
+            todoResponseDtoList.add(todo);
         }
 
 
         //return 값 생성
         LocalDateTime createdTime = postList.getCreatedAt();
+        savedPost.setTitle(title);
+        savedPost.setImageUrl(imageUrl);
+        savedPost.setTodo(todoResponseDtoList);
+        savedPost.setCreatedAt(createdTime);
 
-        return new ResponsePostDto(title, imageUrl, createdTime, responsetodoList);
+        return savedPost;
     }
 
     //(Write.html)게시글 수정
     @Transactional
-    public ResponsePostDto updatePost(Long postId, PostDto postDtos) {
+    public PostResponseDto updatePost(Long postId, PostDto postDtos) {
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new NullPointerException("존재하지 않는 PostId 입니다.")
         );
@@ -105,7 +112,7 @@ public class PostService {
 
         post.update(postDtos);
 
-        List<ResponseTodoDto> responsetodoList = new ArrayList<>();
+        List<TodoResponseDto> todoResponseDtoList = new ArrayList<>();
         List<Todo> todos = new ArrayList<>();
         for(Todo responsetodo :postDtos.getTodo()){
             String content = responsetodo.getContent();
@@ -114,11 +121,11 @@ public class PostService {
             todos.add(saveTodo);
             todoRepository.save(saveTodo);
 
-            ResponseTodoDto todo = new ResponseTodoDto(saveTodo.getId(), saveTodo.getContent(), saveTodo.getDone());
-            responsetodoList.add(todo);
+            TodoResponseDto todo = new TodoResponseDto(saveTodo.getId(), saveTodo.getContent(), saveTodo.getDone());
+            todoResponseDtoList.add(todo);
         }
 
-        return new ResponsePostDto(post.getTitle(), post.getImageUrl(), post.getCreatedAt(), responsetodoList);
+        return new PostResponseDto(post.getTitle(), post.getImageUrl(), post.getCreatedAt(), todoResponseDtoList);
     }
 
     //(Write.html)이미지 저장
@@ -157,11 +164,16 @@ public class PostService {
         Random rand = new Random();
         int likesNum = rand.nextInt(100);
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+        List<TodoResponseDto> todoResponseDtoList = new ArrayList<>();
+
+        for (Todo todo : savedPost.getTodo()) {
+            todoResponseDtoList.add(new TodoResponseDto(todo));
+        }
 
         for (Comment comment : savedPost.getComment()) {
             commentResponseDtoList.add(new CommentResponseDto(comment));
         }
 
-        return new PostGetResponseDto(savedPost,likesNum,commentResponseDtoList);
+        return new PostGetResponseDto(savedPost,todoResponseDtoList,likesNum,commentResponseDtoList);
     }
 }
