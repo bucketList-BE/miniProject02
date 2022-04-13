@@ -36,7 +36,6 @@ public class PostService {
     //(Write.html)게시글 작성
     @Transactional
     public PostResponseDto registerPost(PostDto postDtos, User user) {
-        PostResponseDto savedPost = new PostResponseDto();
         List<TodoResponseDto> todoResponseDtoList = new ArrayList<>();
 
         String title = postDtos.getTitle();
@@ -75,12 +74,7 @@ public class PostService {
 
         //return 값 생성
         LocalDateTime createdTime = postList.getCreatedAt();
-        savedPost.setTitle(title);
-        savedPost.setImageUrl(imageUrl);
-        savedPost.setTodo(todoResponseDtoList);
-        savedPost.setCreatedAt(createdTime);
-
-        return savedPost;
+        return new PostResponseDto(title, imageUrl, createdTime, todoResponseDtoList);
     }
 
     //(Write.html)게시글 수정
@@ -94,21 +88,6 @@ public class PostService {
         for(Todo todo:todoList){
             todoRepository.deleteById(todo.getId());
         }
-
-        //게시글 수정 시 이미지가 다를 시 기존 이미지 삭제하기
-//        if (!(post.getImageUrl().equals(postDtos.getImageUrl()))) {
-//            String projectPath = "http://13.125.254.246/home/ubuntu/image/301f128d-8f10-43a2-b284-6a1a8ac154d9_React-icon.svg.png";
-//
-//            projectPath = post.getImageUrl();
-//            projectPath = projectPath.substring(projectPath.indexOf("/home/ubuntu/image"));
-//            System.out.println(projectPath);
-//
-//            try {
-//                Files.delete(Paths.get(projectPath));
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
 
         post.update(postDtos);
 
@@ -124,7 +103,6 @@ public class PostService {
             TodoResponseDto todo = new TodoResponseDto(saveTodo.getId(), saveTodo.getContent(), saveTodo.getDone());
             todoResponseDtoList.add(todo);
         }
-
         return new PostResponseDto(post.getTitle(), post.getImageUrl(), post.getCreatedAt(), todoResponseDtoList);
     }
 
@@ -132,13 +110,9 @@ public class PostService {
     public ImageDto registerImage(MultipartFile file) throws IOException {
 
         String projectPath = "/home/ubuntu/image";
-
         UUID uuid = UUID.randomUUID();
-
         String fileName = uuid + "_" + file.getOriginalFilename();
-
         File saveFile = new File(projectPath, fileName);
-
         file.transferTo(saveFile);
 
         return new ImageDto("/image/" + fileName);

@@ -5,7 +5,6 @@ import com.sparta.bucket.dto.PostAllGetResponseDto;
 import com.sparta.bucket.dto.PostDto;
 import com.sparta.bucket.dto.PostGetResponseDto;
 import com.sparta.bucket.dto.PostResponseDto;
-import com.sparta.bucket.dto.ResponsePostDto;
 import com.sparta.bucket.security.UserDetailsImpl;
 import com.sparta.bucket.service.PostService;
 import lombok.RequiredArgsConstructor;
