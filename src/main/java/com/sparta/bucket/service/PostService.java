@@ -11,7 +11,6 @@ import com.sparta.bucket.model.Todo;
 import com.sparta.bucket.model.User;
 import com.sparta.bucket.repository.PostRepository;
 import com.sparta.bucket.repository.TodoRepository;
-import com.sparta.bucket.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,12 +30,10 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final TodoRepository todoRepository;
-    private final UserRepository userRepository;
 
     //(Write.html)게시글 작성
     @Transactional
     public ResponsePostDto registerPost(PostDto postDtos, User user) {
-        ResponsePostDto savedPost = new ResponsePostDto();
         List<ResponseTodoDto> responsetodoList = new ArrayList<>();
 
         String title = postDtos.getTitle();
@@ -75,12 +72,8 @@ public class PostService {
 
         //return 값 생성
         LocalDateTime createdTime = postList.getCreatedAt();
-        savedPost.setTitle(title);
-        savedPost.setImageUrl(imageUrl);
-        savedPost.setTodo(responsetodoList);
-        savedPost.setCreatedAt(createdTime);
 
-        return savedPost;
+        return new ResponsePostDto(title, imageUrl, createdTime, responsetodoList);
     }
 
     //(Write.html)게시글 수정

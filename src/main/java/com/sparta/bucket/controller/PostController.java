@@ -5,7 +5,6 @@ import com.sparta.bucket.dto.PostAllGetResponseDto;
 import com.sparta.bucket.dto.PostDto;
 import com.sparta.bucket.dto.PostGetResponseDto;
 import com.sparta.bucket.dto.ResponsePostDto;
-import com.sparta.bucket.model.User;
 import com.sparta.bucket.security.UserDetailsImpl;
 import com.sparta.bucket.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +28,7 @@ public class PostController {
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         System.out.println("user의 정보를 가져옵니다.^^" + userDetails.getUser());
-        return postService.registerPost(postDtos, userDetails.getUser()); // , useruserDetails.getUser);
+        return postService.registerPost(postDtos, userDetails.getUser());
     }
 
     //게시글 수정
