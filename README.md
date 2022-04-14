@@ -52,3 +52,10 @@
 
 # :tv: 데모영상
 <img src="https://img.shields.io/badge/YouTube-FF0000?style=flat&logo=YouTube&logoColor=white"/>
+
+# :blossom: 노션링크
+https://selective-anteater-026.notion.site/SA-5-210bc110687b478f9974b0a2a25be9e3
+
+
+# :blossom: 우리팀이 해결한 문제
+
