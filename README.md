@@ -58,7 +58,7 @@
 https://selective-anteater-026.notion.site/SA-5-210bc110687b478f9974b0a2a25be9e3
 
 
-# :blossom: 우리팀이 해결한 문제
+# :key: 우리팀이 해결한 문제
 
 > 1) 로그인 후 새로고침 시 로그아웃되는 문제 
  + 회원가입이 되어있는지 확인가능한 API 생성하여 FE 에서 API 요청하면 BE 에서 User 정보를 보내줌.
