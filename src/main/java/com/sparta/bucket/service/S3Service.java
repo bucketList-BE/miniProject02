@@ -47,7 +47,7 @@ public class S3Service {
                 .build();
     }
 
-    // 최초 게시글 작성 시 업로드
+    // 최초 게시글 작성
     public String upload(MultipartFile file){
         String fileName = createFileName(file.getOriginalFilename());
         ObjectMetadata objectMetadata = new ObjectMetadata();

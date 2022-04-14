@@ -5,6 +5,7 @@ import com.sparta.bucket.dto.PostAllGetResponseDto;
 import com.sparta.bucket.dto.PostDto;
 import com.sparta.bucket.dto.PostGetResponseDto;
 import com.sparta.bucket.dto.PostResponseDto;
+import com.sparta.bucket.model.Post;
 import com.sparta.bucket.security.UserDetailsImpl;
 import com.sparta.bucket.service.PostService;
 import com.sparta.bucket.service.S3Service;
@@ -47,10 +48,17 @@ public class PostController {
         return postService.updatePost(postId, postDtos);
     }
 
-//    //이미지 저장
-//    @PostMapping("/api/image")
-//    public ImageDto imageUpload(@RequestParam("file") MultipartFile file) throws IOException {
-//        return postService.registerImage(file);
+    //만약에 안된다고 하면은 수정이 살려야지~~~~~~~~~
+//    Post post = postRepository.findById(postId).orElseThrow(
+//            () -> new IllegalArgumentException("해당하는 포스트가 없습니다.")
+//    );
+//
+//        if(postDtos.getImageUrl() == null){
+//        String exImageUrl = post.getImageUrl();
+//        postDtos.setImageUrl(exImageUrl);
+//    } else{
+//        String imagePath = s3Service.upload(file, postDtos.getImageUrl());
+//        postDtos.setImageUrl(imagePath);
 //    }
 
     //전체 게시글 조회
