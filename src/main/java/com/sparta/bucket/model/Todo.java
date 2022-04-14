@@ -1,11 +1,8 @@
 package com.sparta.bucket.model;
 
-import com.sparta.bucket.dto.PostDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
-
 import javax.persistence.*;
 
 

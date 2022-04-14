@@ -6,7 +6,6 @@ import com.sparta.bucket.service.TodoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-//@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/post/{postId}/todo/{todoNum}")

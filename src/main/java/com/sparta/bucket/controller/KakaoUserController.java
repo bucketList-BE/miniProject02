@@ -29,14 +29,4 @@ public class KakaoUserController {
         response.addHeader(AUTH_HEADER, token);
 
     }
-
-//    @GetMapping("/oauth/kakao/call")
-//    public ResponseEntity<String> call() {
-//        return ResponseEntity.ok("call");
-//    }
-
-    @GetMapping("/oauth/test")
-    public ResponseEntity<String> hello() {
-        return ResponseEntity.ok("hello");
-    }
 }

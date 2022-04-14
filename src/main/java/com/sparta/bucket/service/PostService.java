@@ -32,7 +32,6 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final TodoRepository todoRepository;
-    private final UserRepository userRepository;
 
     //(Write.html)게시글 작성
     @Transactional
@@ -106,18 +105,6 @@ public class PostService {
         }
         return new PostResponseDto(post.getTitle(), post.getImageUrl(), post.getCreatedAt(), todoResponseDtoList);
     }
-
-    //(Write.html)이미지 저장
-//    public ImageDto registerImage(MultipartFile file) throws IOException {
-//
-//        String projectPath = "/home/ubuntu/image";
-//        UUID uuid = UUID.randomUUID();
-//        String fileName = uuid + "_" + file.getOriginalFilename();
-//        File saveFile = new File(projectPath, fileName);
-//        file.transferTo(saveFile);
-//
-//        return new ImageDto("/image/" + fileName);
-//    }
 
     public List<PostAllGetResponseDto> getAllPosts() {
         List<Post> allSavedPosts = postRepository.findAll();

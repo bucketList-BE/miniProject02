@@ -7,7 +7,6 @@ import com.sparta.bucket.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-//@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/post/{postId}")
 public class CommentController {

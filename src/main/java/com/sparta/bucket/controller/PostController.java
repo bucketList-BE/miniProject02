@@ -1,22 +1,17 @@
 package com.sparta.bucket.controller;
 
-import com.sparta.bucket.dto.ImageDto;
 import com.sparta.bucket.dto.PostAllGetResponseDto;
 import com.sparta.bucket.dto.PostDto;
 import com.sparta.bucket.dto.PostGetResponseDto;
 import com.sparta.bucket.dto.PostResponseDto;
-import com.sparta.bucket.model.Post;
 import com.sparta.bucket.security.UserDetailsImpl;
 import com.sparta.bucket.service.PostService;
 import com.sparta.bucket.service.S3Service;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Slice;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -49,19 +44,6 @@ public class PostController {
         postDtos.setImageUrl(imagePath);
         return postService.updatePost(postId, postDtos);
     }
-
-    //만약에 안된다고 하면은 수정이 살려야지~~~~~~~~~
-//    Post post = postRepository.findById(postId).orElseThrow(
-//            () -> new IllegalArgumentException("해당하는 포스트가 없습니다.")
-//    );
-//
-//        if(postDtos.getImageUrl() == null){
-//        String exImageUrl = post.getImageUrl();
-//        postDtos.setImageUrl(exImageUrl);
-//    } else{
-//        String imagePath = s3Service.upload(file, postDtos.getImageUrl());
-//        postDtos.setImageUrl(imagePath);
-//    }
 
     //전체 게시글 조회
     @GetMapping("/api/posts")
