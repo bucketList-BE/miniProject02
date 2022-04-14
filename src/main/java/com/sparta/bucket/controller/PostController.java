@@ -9,6 +9,8 @@ import com.sparta.bucket.security.UserDetailsImpl;
 import com.sparta.bucket.service.PostService;
 import com.sparta.bucket.service.S3Service;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Slice;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -57,6 +59,25 @@ public class PostController {
     @GetMapping("/api/posts")
     public List<PostAllGetResponseDto> getAllPosts() {
         return postService.getAllPosts();
+    }
+
+    @GetMapping("/api/postsWithPage")
+    public Slice<PostAllGetResponseDto> getPostsWithPage(
+            @RequestParam(required=false) Integer page,
+            @RequestParam(required=false) Integer size,
+            @RequestParam(required=false) String sortBy,
+            @RequestParam(required=false) Boolean isAsc
+            ) {
+        if(isNotNullAllParam(page,size,sortBy,isAsc)){
+            page = page - 1; // page starts at 0
+            return postService.getPostsWithPage(page, size, sortBy, isAsc);
+        }
+        else
+            throw new IllegalArgumentException("페이지의 모든 요소가 필요합니다.");
+    }
+
+    private boolean isNotNullAllParam(Integer page, Integer size, String sortBy, Boolean isAsc) {
+        return (page != null) && (size != null) && (sortBy != null) && (isAsc != null);
     }
 
     //게시글 조회
