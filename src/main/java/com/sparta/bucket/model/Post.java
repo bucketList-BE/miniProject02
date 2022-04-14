@@ -1,6 +1,7 @@
 package com.sparta.bucket.model;
 
 import com.sparta.bucket.dto.PostDto;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,7 +23,7 @@ public class Post extends Timestamped {
     @Column(nullable = false)
     private String title;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String imageUrl;
 
     @ManyToOne
