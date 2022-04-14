@@ -13,6 +13,7 @@ import com.sparta.bucket.repository.PostRepository;
 import com.sparta.bucket.repository.TodoRepository;
 import com.sparta.bucket.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -149,5 +150,21 @@ public class PostService {
         }
 
         return new PostGetResponseDto(savedPost,todoResponseDtoList,likesNum,commentResponseDtoList);
+    }
+
+    public Slice<PostAllGetResponseDto> getPostsWithPage(Integer page, Integer size, String sortBy, Boolean isAsc) {
+
+        Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Slice<Post> slicePosts = postRepository.findAllBy(pageable);
+
+        Random rand = new Random();
+        int likesNum = rand.nextInt(100); // 0 ~ bound - 1
+
+        Slice<PostAllGetResponseDto> postAllGetResponseDtoList = slicePosts.map(eachPost -> new PostAllGetResponseDto(eachPost, likesNum, eachPost.getComment().size()));
+
+        return postAllGetResponseDtoList;
     }
 }
