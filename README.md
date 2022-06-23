@@ -52,7 +52,7 @@
  + 댓글 조회, 수정, 삭제
 
 # :tv: 데모영상
-<img src="https://img.shields.io/badge/YouTube-FF0000?style=flat&logo=YouTube&logoColor=white"/>
+<img src="https://img.shields.io/badge/YouTube-FF0000?style=flat&logo=YouTube&logoColor=white"/> https://youtu.be/E-haJWvqLO4
 
 # :blossom: 노션링크
 https://selective-anteater-026.notion.site/SA-5-210bc110687b478f9974b0a2a25be9e3
